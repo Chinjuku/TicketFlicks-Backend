@@ -1,17 +1,23 @@
 from rest_framework import serializers
 from .models import Movie, Actor, Category
-
-class MovieSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Movie
-        fields = '__all__'
+from theatre.serializers import TheatreSerializer
 
 class ActorSerializer(serializers.ModelSerializer):
     class Meta:
-        models = Actor
-        fields = [ 'actor_name' ]
+        model = Actor
+        fields = ['actor_name']
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        models = Category
-        fields = [ 'category_name' ]
+        model = Category
+        fields = ['category_name']
+
+class MovieSerializer(serializers.ModelSerializer):
+    categories = CategorySerializer(many=True)
+    actors = ActorSerializer(many=True)
+    theatre = TheatreSerializer(many=False)
+    movie_img = serializers.ImageField(required=False)
+
+    class Meta:
+        model = Movie
+        fields = '__all__'

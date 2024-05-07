@@ -91,12 +91,14 @@ INSTALLED_APPS = [
 
     'dj_rest_auth',
     'dj_rest_auth.registration',
+    'django_seed',
 
     'corsheaders',
 
     'useraccount',
     'movie',
     'theatre',
+    'review',
 ]
 
 MIDDLEWARE = [

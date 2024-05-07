@@ -1,3 +1,4 @@
+# run -> pip install -r requirements. txt
 Django==5.0.4
 psycopg2-binary==2.9.9
 dj-rest-auth==4.0.0
@@ -8,3 +9,5 @@ djangorestframework-simplejwt==5.3.1
 pillow==10.2.0
 channels==4.0.0
 daphne==4.0.0
+django_seed==0.3.1
+Faker==25.0.1
