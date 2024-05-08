@@ -12,7 +12,7 @@ class Review(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="review_movie")
 
     def __str__(self):
-        return str(self.name) + " " + str(self.stars) + " " + str(self.review_comment)
+        return str(self.name) + " " + str(self.review_comment) + " " + str(self.id)
 
 class Reply(models.Model):
     review_id = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="reply_review")

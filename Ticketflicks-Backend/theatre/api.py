@@ -5,20 +5,42 @@ from .models import Theatre, Place
 from .serializers import TheatreSerializer, PlaceSerializer, SeatSerializer
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-# from rest_framework.parsers import JSONParser
 
 @csrf_exempt
 def theatre(request, pk):
-    # http://localhost:8000/api/theatre/uuid
+    # http://localhost:8000/api/theatre/uuid/
+    # Load data from json
+    data = json.loads(request.body)
+    theatre_num = int(data.get('theatre_num'))
+    show_time = data.get('show_time')
     if request.method == 'GET':
         theatre = Theatre.objects.get(pk=pk)
         serializer = TheatreSerializer(theatre, many=False)
         return JsonResponse(serializer.data, safe=False)
+    elif request.method == 'PUT':
+        theatre = Theatre.objects.filter(pk=pk).update(theatre_num=theatre_num, show_time=show_time)
+        return JsonResponse({'message': 'Theatre updated successfully'}, status=200)
+    elif request.method == 'DELETE':
+        theatre = Theatre.objects.get(pk=pk)
+        theatre.delete()
+        return JsonResponse({'message': 'Theatre deleted successfully'}, status=200)
+    return JsonResponse({'error': 'Theatre Error'})
+
+@csrf_exempt
+def create_theatre(request):
+    # http://localhost:8000/api/createtheatre/
+    data = json.loads(request.body)
+    if request.method == 'POST':
+        serializer = TheatreSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+    return JsonResponse({'error': 'Method not allowed'}, status=500)
 
 # Select Theatre + Time to show
 @csrf_exempt
 def place(request, pk):
-    # http://localhost:8000/api/place/uuid
+    # http://localhost:8000/api/place/
     if request.method == 'GET':
         place = Place.objects.filter(theatre=pk)
         serializer = PlaceSerializer(place, many=True)
