@@ -4,7 +4,8 @@ from theatre import api
 
 urlpatterns = [
     path('createtheatre/', api.create_theatre),
-    path('theatre/<uuid:pk>/', api.theatre),
-    path('place/<uuid:pk>', api.place),
+    path('alltheatre/<uuid:movieId>/', api.all_theatre), # Show all theatres that showing from Movie
+    path('theatre/<uuid:pk>/', api.theatre), # Show selected theatre from Movie
+    path('place/<uuid:pk>/', api.place),
     path('place/select_seat/', api.select_place)
 ]

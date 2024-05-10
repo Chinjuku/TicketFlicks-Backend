@@ -54,13 +54,23 @@ SIMPLE_JWT = {
     "UPDATE_LAST_LOGIN": True,
     "SIGNING_KEY": "acomplexkey",
     "ALOGRIGTHM": "HS512",
+    'AUTH_HEADER_TYPES': ('Bearer',),                # Authorization header types
+    'USER_ID_FIELD': 'id',                           # Field to use as user identifier
+    'USER_ID_CLAIM': 'user_id',                      # Claim to use for user identifier
 }
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # Default authentication backend
+]
+
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = None
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Console email backend for development
+ACCOUNT_UNIQUE_EMAIL = True    # Ensure email is unique
 
 
 CORS_ALLOWED_ORIGINS = [

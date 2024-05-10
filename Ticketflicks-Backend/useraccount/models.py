@@ -10,7 +10,6 @@ class CustomUserManager(UserManager):
         if not email:
             raise ValueError("You have not specified a valid e-mail address")
     
-        name = self(name)
         email = self.normalize_email(email)
         user = self.model(email=email, name=name, **extra_fields)
         user.set_password(password)
@@ -49,7 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['name',]
+    # REQUIRED_FIELDS = ['name',]
 
     def avatar_url(self):
         if self.avatar:

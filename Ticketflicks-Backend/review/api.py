@@ -25,8 +25,11 @@ def update_del_review(request, reviewId):
     review_comment = data.get('review_comment')
     stars = data.get('stars')
     if request.method == 'PUT':
-        reviews = Review.objects.filter(pk=reviewId).update(name=name, stars=stars, review_comment=review_comment)
+        Review.objects.filter(pk=reviewId).update(name=name, stars=stars, review_comment=review_comment)
         return JsonResponse({"message": "update successfully"}, safe=False)
+    elif request.method == 'DELETE':
+        Review.objects.filter(pk=reviewId).delete()
+        return JsonResponse({"message": "delete successfully"}, safe=False)
     
 @csrf_exempt
 def reply(request, reviewId):
@@ -40,5 +43,17 @@ def reply(request, reviewId):
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, safe=False)
+
+@csrf_exempt
+def update_del_reply(request, replyId):
+    data = json.loads(request.body)
+    name = data.get('name')
+    reply_comment = data.get('reply_comment')
+    if request.method == 'PUT':
+        Review.objects.filter(pk=replyId).update(name=name, reply_comment=reply_comment)
+        return JsonResponse({"message": "update successfully"}, safe=False)
+    elif request.method == 'DELETE':
+        Review.objects.filter(pk=replyId).delete()
+        return JsonResponse({"message": "delete successfully"}, safe=False)
     
         

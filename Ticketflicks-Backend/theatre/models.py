@@ -1,7 +1,7 @@
-from django.db import models
 from django.db.models.signals import post_save
+from datetime import datetime, timedelta
 from django.dispatch import receiver
-
+from django.db import models
 import uuid
 
 # Create your models here.
@@ -9,6 +9,7 @@ class Theatre(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     theatre_num = models.IntegerField()
     show_time = models.DateTimeField(blank=True)
+    is_show = models.BooleanField(default=True) # ถ้า True = เปิดจองได้ แต่ ถ้า False = ปิดจองหรือฉายหนังเสร็จสิ้นละ (show_time+2hr)
 
     def __str__(self):
         return str(self.theatre_num) + " Datetime : " + self.show_time.strftime('%Y-%m-%d %H:%M') + " " + str(self.id)
@@ -40,3 +41,12 @@ def create_places(sender, instance, created, **kwargs):
                 if (row == 'E'):
                     type = 'vip'
                 Place.objects.create(seat_num=seat_num, theatre=instance, type=type)
+
+# @receiver(post_save, sender=Theatre)
+# def update_theatres(sender, instance, created, **kwargs):
+#     # Check if the instance is being created or updated
+#     if created or instance.is_show:
+#         # Perform your logic to update the instance here
+#         now = datetime.today() - timedelta(hours=2)
+#         instance.is_show = False if instance.show_time <= now else True
+#         instance.save()

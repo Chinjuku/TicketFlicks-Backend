@@ -1,5 +1,5 @@
 import json
-
+from datetime import datetime, timedelta
 from movie.models import Movie
 from .models import Theatre, Place
 from .serializers import TheatreSerializer, PlaceSerializer, SeatSerializer
@@ -18,13 +18,26 @@ def theatre(request, pk):
         serializer = TheatreSerializer(theatre, many=False)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'PUT':
-        theatre = Theatre.objects.filter(pk=pk).update(theatre_num=theatre_num, show_time=show_time)
+        Theatre.objects.filter(pk=pk).update(theatre_num=theatre_num, show_time=show_time)
         return JsonResponse({'message': 'Theatre updated successfully'}, status=200)
     elif request.method == 'DELETE':
         theatre = Theatre.objects.get(pk=pk)
         theatre.delete()
         return JsonResponse({'message': 'Theatre deleted successfully'}, status=200)
     return JsonResponse({'error': 'Theatre Error'})
+
+@csrf_exempt
+def all_theatre(request, movieId):
+    now = datetime.today() - timedelta(hours=2)
+    # http://localhost:8000/api/alltheatre/movieId/
+    if request.method == 'GET':
+        theatre = Theatre.objects.filter(movie=movieId)
+        serializer = TheatreSerializer(theatre, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    # To AUTO make is_show = False
+    if request.method == 'PUT':
+        Theatre.objects.filter(show_time=now).update(is_show=False)
+        return JsonResponse({ 'message': now }, safe=False)
 
 @csrf_exempt
 def create_theatre(request):
@@ -35,7 +48,6 @@ def create_theatre(request):
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
-    return JsonResponse({'error': 'Method not allowed'}, status=500)
 
 # Select Theatre + Time to show
 @csrf_exempt
