@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   web:
-    build: ./ticketflicks-backend
+    build: ./Ticketflicks-Backend
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./ticketflicks-backend/:/usr/src/ticketflicks-backend
+      - ./Ticketflicks-Backend/:/usr/src/Ticketflicks-Backend
     ports:
       - 8000:8000
     env_file:

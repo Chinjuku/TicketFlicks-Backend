@@ -1,6 +1,6 @@
 FROM python:3.12.2-slim-bullseye
 
-WORKDIR /usr/src/ticketflicks-backend
+WORKDIR /usr/src/Ticketflicks-Backend
 
 ENV PYTHONDONTWRITEBYCODE 1
 ENV PYTHONUNBUFFERED 1
@@ -12,9 +12,9 @@ COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
 COPY ./entrypoint.sh .
-RUN sed -i 's/\r$//g' /usr/src/ticketflicks-backend/entrypoint.sh
-RUN chmod +x /usr/src/ticketflicks-backend/entrypoint.sh
+RUN sed -i 's/\r$//g' /usr/src/Ticketflicks-Backend/entrypoint.sh
+RUN chmod +x /usr/src/Ticketflicks-Backend/entrypoint.sh
 
 COPY . .
 
-ENTRYPOINT [ "/usr/src/ticketflicks-backend/entrypoint.sh" ]
+ENTRYPOINT [ "/usr/src/Ticketflicks-Backend/entrypoint.sh" ]
