@@ -72,10 +72,12 @@ ACCOUNT_EMAIL_VERIFICATION = None
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Console email backend for development
 ACCOUNT_UNIQUE_EMAIL = True    # Ensure email is unique
 
-
+# CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://127.0.0.1:3000',
+    'http://localhost:8000',
+    'http://localhost:3000',
 ]
 
 REST_AUTH = {

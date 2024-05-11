@@ -21,9 +21,13 @@ class MovieSerializer(serializers.ModelSerializer):
     categories = CategorySerializer(many=True)
     actors = ActorSerializer(many=True)
     theatre = TheatreSerializer(many=False)
-    favorite = IPAddressSerializer(many=True)
-    movie_img = serializers.ImageField(required=False)
+    movie_img_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Movie
         fields = '__all__'
+
+    def get_movie_img_url(self, obj):
+        if obj.movie_img:
+            return obj.movie_img.url
+        return None

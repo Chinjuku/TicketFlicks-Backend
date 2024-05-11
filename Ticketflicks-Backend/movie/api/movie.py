@@ -33,7 +33,7 @@ def recommand_movie(request):
 @csrf_exempt
 def onshow_movie(request):
     if request.method == 'GET':
-        movie = Movie.objects.filter(showing_date__gte=future4days, showing_due__lte=today)
+        movie = Movie.objects.filter(showing_date__lte=future4days, showing_due__gte=today)
         serializer = MovieSerializer(movie, many=True)
         return JsonResponse(serializer.data, safe=False)
     
