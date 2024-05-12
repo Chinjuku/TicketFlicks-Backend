@@ -2,11 +2,6 @@ from rest_framework import serializers
 from .models import Movie, Actor, Category, IPAddress
 from theatre.serializers import TheatreSerializer
 
-class IPAddressSerializer(serializers.Serializer):
-    class Meta:
-        model = IPAddress
-        fields = '__all__'
-
 class ActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Actor
@@ -31,3 +26,9 @@ class MovieSerializer(serializers.ModelSerializer):
         if obj.movie_img:
             return obj.movie_img.url
         return None
+
+class IPAddressSerializer(serializers.Serializer):
+    movieId = MovieSerializer()
+    class Meta:
+        model = IPAddress
+        fields = '__all__'

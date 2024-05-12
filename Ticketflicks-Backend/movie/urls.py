@@ -9,6 +9,7 @@ urlpatterns = [
     path('movie/onshow/', movie.onshow_movie),
     path('movie/comming/', movie.comming_movie),
     path('movie/fav/', movie.favorite_movie),
+    path('movie/topfive/', movie.topfive_movie),
     path('ip/fav/<uuid:movieId>/', ip_address.all_fav),
     path('category/', category.all_categories),
 ]

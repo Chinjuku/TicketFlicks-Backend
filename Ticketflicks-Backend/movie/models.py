@@ -41,8 +41,5 @@ class IPAddress(models.Model):
     movieId = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="fav_ip")
     favorite = models.BooleanField(default=False)
 
-    # class Meta:
-    #     unique_together = ('ip', 'movieId')
-
     def __str__(self):
-        return self.ip + " " + str(self.favorite)
+        return self.ip + " " + str(self.favorite) + " " + str(self.movieId)

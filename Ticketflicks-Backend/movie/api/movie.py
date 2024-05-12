@@ -1,7 +1,7 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from ..models import Movie
-from ..serializers import MovieSerializer
+from ..models import IPAddress, Movie
+from ..serializers import IPAddressSerializer, MovieSerializer
 from datetime import date, timedelta
 
 today = date.today()
@@ -46,10 +46,19 @@ def comming_movie(request):
 
 @csrf_exempt
 def favorite_movie(request):
+    ip_client = request.META.get('REMOTE_ADDR')
     if request.method == 'GET':
-        movie = Movie.objects.filter(favorite=True)
+        fav = IPAddress.objects.filter(ip=ip_client, favorite=True)
+        serializer = IPAddressSerializer(fav, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+@csrf_exempt
+def topfive_movie(request):
+    if request.method == 'GET':
+        movie = Movie.objects.order_by('-rating')[:5]
         serializer = MovieSerializer(movie, many=True)
         return JsonResponse(serializer.data, safe=False)
+
     
 
 

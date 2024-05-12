@@ -21,9 +21,7 @@ def all_fav(request, movieId):
         return JsonResponse({"message": ip_object.favorite}, safe=False)
     elif request.method == 'GET':
         try:
-            movie = Movie.objects.get(pk=movieId)
-        except Movie.DoesNotExist:
+            fav = IPAddress.objects.get(ip=client_ip, movieId=movieId)
+        except:
             return JsonResponse({"error": "Movie not found"}, status=404)
-        movies_with_favorite_ip = Movie.objects.get()
-        serializer = MovieSerializer(movies_with_favorite_ip, many=False)
-        return JsonResponse(serializer.data, safe=False)
+        return JsonResponse(fav.favorite, safe=False)
