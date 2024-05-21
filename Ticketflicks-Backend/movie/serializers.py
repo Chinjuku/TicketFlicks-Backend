@@ -5,7 +5,12 @@ from theatre.serializers import TheatreSerializer
 class ActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Actor
-        fields = ['actor_name']
+        fields = '__all__'
+    
+    def get_actor_img_url(self, obj):
+        if obj.actor_img:
+            return obj.actor_img.url    
+        return None
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,7 +20,6 @@ class CategorySerializer(serializers.ModelSerializer):
 class MovieSerializer(serializers.ModelSerializer):
     categories = CategorySerializer(many=True)
     actors = ActorSerializer(many=True)
-    theatre = TheatreSerializer(many=False)
     movie_img_url = serializers.SerializerMethodField()
 
     class Meta:

@@ -2,6 +2,7 @@ from django.db.models.signals import post_save
 from datetime import datetime, timedelta
 from django.dispatch import receiver
 from django.db import models
+from movie.models import Movie
 import uuid
 
 # Create your models here.
@@ -10,6 +11,7 @@ class Theatre(models.Model):
     theatre_num = models.IntegerField()
     show_time = models.DateTimeField(blank=True)
     is_show = models.BooleanField(default=True) # ถ้า True = เปิดจองได้ แต่ ถ้า False = ปิดจองหรือฉายหนังเสร็จสิ้นละ (show_time+2hr)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie_shows")
 
     def __str__(self):
         return str(self.theatre_num) + " Datetime : " + self.show_time.strftime('%Y-%m-%d %H:%M') + " " + str(self.id)
@@ -28,7 +30,7 @@ class Place(models.Model): # ที่นั่ง
     theatre = models.ForeignKey(Theatre, on_delete=models.CASCADE, related_name="place_theatre")
 
     def __str__(self):
-        return self.seat_num + " , Theatre : " + str(self.theatre.theatre_num) + ", Datetime : " + self.theatre.show_time.strftime('%Y-%m-%d %H:%M')
+        return str(self.id) + " " + self.seat_num + " , Theatre : " + str(self.theatre.theatre_num) + ", Datetime : " + self.theatre.show_time.strftime('%Y-%m-%d %H:%M')
 
 @receiver(post_save, sender=Theatre)
 def create_places(sender, instance, created, **kwargs):

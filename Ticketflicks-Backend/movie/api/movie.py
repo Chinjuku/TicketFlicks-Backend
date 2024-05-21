@@ -12,7 +12,8 @@ future7days = today + timedelta(days=7)
 def all_movie(request):
     """List all code snippets, or create a new snippet."""
     if request.method == 'GET':
-        movies = Movie.objects.all().select_related('theatre').prefetch_related('actors', 'categories')
+        # movies = Movie.objects.all().select_related('theatre').prefetch_related('actors', 'categories')
+        movies = Movie.objects.all()
         serializer = MovieSerializer(movies, many=True)
         return JsonResponse(serializer.data, safe=False, status=200)
 

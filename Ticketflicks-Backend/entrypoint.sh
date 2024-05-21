@@ -13,5 +13,6 @@ fi
 
 python manage.py makemigrations
 python manage.py migrate
+# docker compose exec web python manage.py migrate
 
 exec "$@"

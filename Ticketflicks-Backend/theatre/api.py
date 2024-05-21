@@ -27,14 +27,21 @@ def theatre(request, pk):
     return JsonResponse({'error': 'Theatre Error'})
 
 @csrf_exempt
-def all_theatre(request, movieId):
+def all_theatre(request, movieId, date):
     now = datetime.today() - timedelta(hours=2)
-    # http://localhost:8000/api/alltheatre/movieId/
+    wantdate = datetime.strptime(date, '%Y-%m-%d').date()
+    # http://localhost:8000/api/alltheatre/movieId/date/
     if request.method == 'GET':
-        theatre = Theatre.objects.filter(movie=movieId)
+        theatre = Theatre.objects.filter(movie=movieId, show_time__date=wantdate).order_by('show_time')
         serializer = TheatreSerializer(theatre, many=True)
-        return JsonResponse(serializer.data, safe=False)
-    # To AUTO make is_show = False
+        theatre_data = serializer.data
+        grouped_data = {}
+        for item in theatre_data:
+            theatre_num = item['theatre_num']
+            if theatre_num not in grouped_data:
+                grouped_data[theatre_num] = []
+            grouped_data[theatre_num].append(item)
+        return JsonResponse(grouped_data, safe=False)
     if request.method == 'PUT':
         Theatre.objects.filter(show_time=now).update(is_show=False)
         return JsonResponse({ 'message': now }, safe=False)
@@ -63,7 +70,7 @@ def select_place(request):
     # send form -> {
         # "seat" : [ "id1", "id2" ]
     # }
-    if request.method == 'GET':
+    if request.method == 'POST':
         try:
             data = json.loads(request.body)
             ids = data.get('seats', [])  # Get list of IDs from request body
@@ -72,9 +79,8 @@ def select_place(request):
         # Filter places based on the list of IDs
         places = Place.objects.filter(id__in=ids)
         serializer = SeatSerializer(places, many=True)
-        theatre_id = places.first().theatre.id
-        # Find price from Movie
-        movie = Movie.objects.filter(theatre=theatre_id).first()
+        movie_id = places.first().theatre.movie.id
+        movie = Movie.objects.get(id=movie_id)
         # Count places
         price = movie.price
         vip_price = places.filter(type="vip").count() * price

@@ -1,11 +1,12 @@
 from django.db import models
 import uuid
-from theatre.models import Theatre
+# from theatre.models import Theatre
 
 # Create your models here.
 class Actor(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     actor_name = models.CharField(max_length=225)
+    performed_as = models.CharField(max_length=225)
     actor_img = models.ImageField(upload_to="uploads/actors", blank=True)
 
     def __str__(self):
@@ -30,8 +31,9 @@ class Movie(models.Model):
     actors = models.ManyToManyField(Actor, blank=True)
     categories = models.ManyToManyField(Category)
     showing_due = models.DateField() # วันที่ฉายเสร็จสิ้น
+    director = models.CharField(max_length=255)
     # favorite = models.ManyToManyField(IPAddress, related_name="ip_fav", blank=True)
-    theatre = models.ForeignKey(Theatre, on_delete=models.CASCADE, related_name="movie_theatre")
+    # theatre = models.ForeignKey(Theatre, on_delete=models.CASCADE, related_name="movie_theatre")
     
     def __str__(self):
         return self.movie_name + " " + str(self.id)
