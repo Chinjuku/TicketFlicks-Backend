@@ -76,19 +76,26 @@ def select_place(request):
             ids = data.get('seats', [])  # Get list of IDs from request body
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
-        # Filter places based on the list of IDs
         places = Place.objects.filter(id__in=ids)
-        serializer = SeatSerializer(places, many=True)
+        serializer = PlaceSerializer(places, many=True)
         movie_id = places.first().theatre.movie.id
         movie = Movie.objects.get(id=movie_id)
-        # Count places
         price = movie.price
         vip_price = places.filter(type="vip").count() * price
         countnormal = places.filter(type="normal").count() * price
         countvip =  vip_price * 0.07 + vip_price
-        # Serialize filtered places       
         response_data = {
             "seats": serializer.data,
             "allprice": countnormal + countvip
         }
         return JsonResponse(response_data, safe=False)
+
+@csrf_exempt
+def update_seat(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        seats = data.get('seats', [])
+        Place.objects.filter(id__in=seats).update(isIdle=False)
+        return JsonResponse({'message': 'Seat updated successfully'}, status=200)
+        # serializer = PlaceSerializer(places)
+        # return JsonResponse(serializer.data, safe=False)

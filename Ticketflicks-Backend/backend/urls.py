@@ -25,4 +25,5 @@ urlpatterns = [
     path('api/', include('movie.urls')),
     path('api/', include('theatre.urls')),
     path('api/', include('review.urls')),
+    path('api/', include('payment.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

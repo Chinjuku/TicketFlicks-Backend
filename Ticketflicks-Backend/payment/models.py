@@ -1,16 +1,12 @@
 from django.db import models
-import uuid
-from backend.theatre.models import Place, Theatre
+from theatre.models import Place
+# import uuid
+# from backend.theatre.models import 
 
-# Create your models here.
-# To check about select tickets
-# class Ticket(models.Model):
-#     theatreId = models.ForeignKey(Theatre)
-#     placeId = models.ForeignKey(Place)
-#     amount = models.FloatField()
+class Payment(models.Model):
+    payment_id = models.CharField(unique=True, primary_key=True)
+    client_secret = models.CharField()
+    payment_method = models.CharField()
+    seats = models.ManyToManyField(Place)
+    amounts = models.FloatField()
 
-
-# class Payment(models.Model):
-#     id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
-#     ticket = models.ManyToManyField(Ticket)
-#     amount = models.FloatField()    

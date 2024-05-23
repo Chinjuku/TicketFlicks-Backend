@@ -23,17 +23,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-2d&!6&53bby*94)gdo0p2(k5r^t%ahm!sxwl^5o-6v61+mo3vu'
 SECRET_KEY = os.environ.get('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 # DEBUG = os.environ.get('DEBUG')
 
-# ALLOWED_HOSTS = []
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(" ")
 
 AUTH_USER_MODEL = 'useraccount.User'
 
 SITE_ID = 1
+
+SITE_URL = 'http://localhost:3000'
 
 WEBSITE_URL = 'http://localhost:8000'
 
@@ -111,6 +110,7 @@ INSTALLED_APPS = [
     'movie',
     'theatre',
     'review',
+    'payment',
 ]
 
 MIDDLEWARE = [
@@ -122,6 +122,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+STRIPE_SECRET_KEY = 'sk_test_51PIsCQ2LBrdE2noaMBEWAK690BPcY0Bx9NoxarRpsNEi3rr6WBadsbB43tluaY0HSlrxx3lHOlAf7CZHSLUsyUEr004hs7ihKW'
 
 ROOT_URLCONF = 'backend.urls'
 
