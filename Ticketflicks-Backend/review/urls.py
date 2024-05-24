@@ -6,4 +6,5 @@ urlpatterns = [
     path('reply/<uuid:reviewId>/', api.reply),
     path('changereview/<uuid:reviewId>/', api.update_del_review),
     path('changereply/<uuid:replyId>/', api.update_del_reply),
+    path('countreview/', api.count_review),
 ]

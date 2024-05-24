@@ -1,9 +1,18 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
-from .serializers import ReplySerializer, ReviewSerializer
+from .serializers import CountReviewSerializer, ReplySerializer, ReviewSerializer
 from .models import Review
 import json
+from django.db.models import Count
+
+@csrf_exempt
+def count_review(request):
+    if request.method == 'GET':
+        reviews = Review.objects.values("movie").annotate(count_review=Count("movie"))
+        review_data = list(reviews)
+        return JsonResponse(review_data, safe=False)
+    
 
 @csrf_exempt
 def review(request, movieId):

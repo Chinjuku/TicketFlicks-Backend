@@ -11,3 +11,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = '__all__'
 
+class CountReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ('movie','count_review')
+
