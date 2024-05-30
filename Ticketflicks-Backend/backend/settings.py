@@ -23,6 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-2d&!6&53bby*94)gdo0p2(k5r^t%ahm!sxwl^5o-6v61+mo3vu'
 SECRET_KEY = os.environ.get('SECRET_KEY')
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 DEBUG = True
 # DEBUG = os.environ.get('DEBUG')
 
@@ -46,16 +47,14 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     "ROTATE_REFRESH_TOKEN": False,
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": True,
-    "SIGNING_KEY": "acomplexkey",
+    "SIGNING_KEY": JWT_SECRET_KEY,
     "ALOGRIGTHM": "HS512",
-    'AUTH_HEADER_TYPES': ('Bearer',),                # Authorization header types
-    'USER_ID_FIELD': 'id',                           # Field to use as user identifier
-    'USER_ID_CLAIM': 'user_id',                      # Claim to use for user identifier
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
 AUTHENTICATION_BACKENDS = [
