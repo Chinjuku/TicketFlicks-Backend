@@ -1,6 +1,7 @@
 from movie.serializers import MovieSerializer
 from rest_framework import serializers
 from .models import Reply, Review
+from useraccount.serializers import UserDetailSerializer
 
 class ReplySerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,6 +9,7 @@ class ReplySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ReviewSerializer(serializers.ModelSerializer):
+    user = UserDetailSerializer(many=False)
     movie = MovieSerializer(many=False)
     class Meta:
         model = Review
