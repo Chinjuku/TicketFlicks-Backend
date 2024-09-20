@@ -45,3 +45,4 @@ class IPAddress(models.Model):
 
     def __str__(self):
         return self.ip + " " + str(self.favorite) + " " + str(self.movieId)
+

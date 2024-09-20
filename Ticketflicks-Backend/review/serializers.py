@@ -4,6 +4,7 @@ from .models import Reply, Review
 from useraccount.serializers import UserDetailSerializer
 
 class ReplySerializer(serializers.ModelSerializer):
+    user = UserDetailSerializer(many=False)
     class Meta:
         model = Reply
         fields = '__all__'
